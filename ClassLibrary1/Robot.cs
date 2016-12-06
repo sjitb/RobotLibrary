@@ -21,6 +21,7 @@ namespace RobotLibrary
     public class Chip
     {
         public CHIP_TYPE cType;
+        public string schipName;
         public Chip()
         { }
 
@@ -44,17 +45,19 @@ namespace RobotLibrary
         public sortChip()
         {
             cType = CHIP_TYPE.SORT_CHIP;
+            schipName = "Chip of Sorts";
         }
 
-        public override int ChipLogic(int[] ari)
+        public override int[] ChipLogic(int[] arr, SORT_DIRECTION sortDir)
         {
-            int sum = 0;
-            foreach (int i in ari)
+            Array.Sort(arr);
+
+            if(sortDir == SORT_DIRECTION.DESCENDING)
             {
-                sum += i * i;
+                Array.Reverse(arr);
             }
 
-            return sum;
+            return arr;
         }
     }
 
@@ -64,13 +67,18 @@ namespace RobotLibrary
         public totalChip()
         {
             cType = CHIP_TYPE.TOTAL_CHIP;
+            schipName = "Total Chip";
         }
 
         public override int ChipLogic(int[] arr)
         {
-            int total = arr.Length;
+            int sum = 0;
+            foreach (int i in arr)
+            {
+                sum += i;
+            }
 
-            return total;
+            return sum;
         }
     }
 
@@ -85,7 +93,7 @@ namespace RobotLibrary
         {
             lstChips = new List<Chip>();
             hsChips = new HashSet<Chip>();
-            sRobotName = "WLRobot;";
+            sRobotName = "SBTestRobot;";
         }
 
         public string RobotName
@@ -117,7 +125,7 @@ namespace RobotLibrary
             return rs;
         }
 
-        public int[] ExecChipLogic(int[] arr, SORT_DIRECTION sortDir = SORT_DIRECTION.DESCENDING)
+        public int[] ExecChipLogic(int[] arr, SORT_DIRECTION sortDir = SORT_DIRECTION.ASCENDING)
         {
             int[] resultArr = arr;
 
@@ -142,17 +150,17 @@ namespace RobotLibrary
 
             testRobot.PlugChip(sc);
 
-            Console.WriteLine("The chip response {0}", testRobot.ExecChipLogic(arr).ToString());
+            //Console.WriteLine("The chip response {0}", testRobot.ExecChipLogic(arr).ToString());
 
             totalChip tc = new totalChip();
 
             testRobot.PlugChip(tc);
 
-            Console.WriteLine("The chip response {0}", testRobot.ExecChipLogic(arr).ToString());
+            //Console.WriteLine("The chip response {0}", testRobot.ExecChipLogic(arr).ToString());
 
             sortChip sc2 = new sortChip();
 
-            Console.WriteLine("The chip response {0}", testRobot.ExecChipLogic(arr).ToString());
+            //Console.WriteLine("The chip response {0}", testRobot.ExecChipLogic(arr).ToString());
 
             Console.WriteLine("The unique chip count {0}", testRobot.UniqueChips.ToString());
 
